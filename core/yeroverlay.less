@@ -1,0 +1,41 @@
+/* CORE do not change begin */
+
+	/* WRAP begin */
+
+		.yeroverlay-wrap {
+			display: none;
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			text-align: center;
+			z-index: 999;
+			cursor: pointer;
+			white-space: nowrap;
+		}
+
+		.yeroverlay-wrap:before {
+			content: '';
+			display: inline-block;
+			height: 96%; 
+			vertical-align: middle;
+			margin-right: -0.25em;
+		}
+
+	/* WRAP end */
+	
+	/* BOX begin */
+
+		.yeroverlay-box {
+			display: inline-block;
+			vertical-align: middle;
+			text-align: left;
+			cursor: default;
+			overflow-y: auto;
+			white-space: normal;
+		}
+
+	/* BOX end */
+	
+/* CORE do not change end */
