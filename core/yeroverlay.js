@@ -27,22 +27,22 @@ var yerOverlay = {
     },
     
     
-    form: function ( param ) {
+    form: function ( p ) {
         
-        if ( !param  ) { param = {}; }
-        if ( !param.path  ) { param.path = '/'; }
-        if ( !param.path  ) { param.selector = '#overlay'; }
+        if ( typeof p === 'undefined' ) { p = {}; }
+        if ( typeof p.path === 'undefined' ) { p.path = '/'; }
+        if ( typeof p.selector === 'undefined' ) { p.selector = '#overlay'; }
         
         yerOverlay.dom.wrap.fadeIn( 200 );
         
         yerOverlay.dom.box.hide();
-        yerOverlay.dom.cont.load( param.path + ' ' + param.selector, function() {
+        yerOverlay.dom.cont.load( p.path + ' ' + p.selector, function() {
             
             yerOverlay.fitboxsize();
             
             yerOverlay.dom.box.fadeIn( 200 , function(){
             
-                yerOverlay.formsubmit( param );
+                yerOverlay.formsubmit( p );
                 yerOverlay.closebtn();
                 
             });
@@ -51,7 +51,7 @@ var yerOverlay = {
     },
     
     
-    formsubmit: function ( param ) {
+    formsubmit: function ( p ) {
          
          
          yerOverlay.dom.cont.find('form').submit( function(event) {
@@ -64,14 +64,14 @@ var yerOverlay = {
 
              jQuery.post( url + '?ajax=y', form.serialize(), function( data ) {
                  
-                 var content = jQuery( data ).find( param.selector );
+                 var content = jQuery( data ).find( p.selector );
                  yerOverlay.dom.cont.children().fadeOut( 200, function(){
 
                     jQuery(this).parent().empty().append( content ).children().css('opacity', 0);
                     yerOverlay.fitboxsize();
                     yerOverlay.dom.cont.children().hide().css('opacity', 1).fadeIn( 200 );
                     
-                    yerOverlay.formsubmit( param );
+                    yerOverlay.formsubmit( p );
                     yerOverlay.closebtn();
                     
                  });
