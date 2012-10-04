@@ -17,4 +17,27 @@ h2. Roadmap
 
 * [done] forms
 
+h2. Examples
+
+h3. Forms
+
+<pre><code>(function(){
+
+    jQuery('.formbutton').on('click', function (event) {
+	    event.preventDefault();
+
+	    var my_overlay= yerOverlay;
+        my_overlay.form({
+            path: '/kontakt/',
+            selector: '.form-wrap'
+        });
+	});
+	
+}());
+</code></pre>
+
+This example opens an overlay including all content from the selector class "form-wrap" of the page kontakt. The form submits via ajax and the result is displayed in the overlay.
+
+h2. Inquires
+
 Just ask me for your needs at mail@johannheyne.de or create a new issue.
