@@ -24,15 +24,15 @@ h3. Forms
 <pre><code>(function(){
 
     jQuery('.formbutton').on('click', function (event) {
-	    event.preventDefault();
+        event.preventDefault();
 
-	    var my_overlay= yerOverlay;
+        var my_overlay= yerOverlay;
         my_overlay.form({
             path: '/kontakt/',
             selector: '.form-wrap'
         });
-	});
-	
+    });
+    
 }());
 </code></pre>
 
