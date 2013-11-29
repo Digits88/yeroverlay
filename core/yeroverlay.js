@@ -1,17 +1,22 @@
-var yerOverlay = {
+var YerOverlay = {
     
     dom: {},
     
     init: function () {
         jQuery('body').append('<div class="yeroverlay-wrap"><div class="yeroverlay-box"><div class="yeroverlay-content">');
         
-        yerOverlay.dom.wrap = jQuery('.yeroverlay-wrap');
-        yerOverlay.dom.box = jQuery('.yeroverlay-box');
-        yerOverlay.dom.cont = jQuery('.yeroverlay-content');
+        YerOverlay.dom.wrap = jQuery('.yeroverlay-wrap');
+        YerOverlay.dom.box = jQuery('.yeroverlay-box');
+        YerOverlay.dom.cont = jQuery('.yeroverlay-content');
         
-        yerOverlay.dom.wrap.on('click', function(event) { yerOverlay.dom.wrap.fadeOut( 100 ); event.stopPropagation(); });
-        yerOverlay.dom.box.on('click', function(event) { event.stopPropagation(); });
-        
+        YerOverlay.dom.wrap.on('click', function(event) { YerOverlay.dom.wrap.fadeOut( 100 ); event.stopPropagation(); });
+        YerOverlay.dom.box.on('click', function(event) { event.stopPropagation(); });
+    },
+    
+    open: function () {
+          
+          YerOverlay.dom.wrap.fadeIn( 200 );
+          YerOverlay.fitboxsize();
     },
     
     
@@ -33,17 +38,17 @@ var yerOverlay = {
         if ( typeof p.path === 'undefined' ) { p.path = '/'; }
         if ( typeof p.selector === 'undefined' ) { p.selector = '#overlay'; }
         
-        yerOverlay.dom.wrap.fadeIn( 200 );
+        YerOverlay.dom.wrap.fadeIn( 200 );
         
-        yerOverlay.dom.box.hide();
-        yerOverlay.dom.cont.load( p.path + ' ' + p.selector, function() {
+        YerOverlay.dom.box.hide();
+        YerOverlay.dom.cont.load( p.path + ' ' + p.selector, function() {
             
-            yerOverlay.fitboxsize();
+            YerOverlay.fitboxsize();
             
-            yerOverlay.dom.box.fadeIn( 200 , function(){
+            YerOverlay.dom.box.fadeIn( 200 , function(){
             
-                yerOverlay.formsubmit( p );
-                yerOverlay.closebtn();
+                YerOverlay.formsubmit( p );
+                YerOverlay.closebtn();
                 
             });
         });
@@ -54,7 +59,7 @@ var yerOverlay = {
     formsubmit: function ( p ) {
          
          
-         yerOverlay.dom.cont.find('form').submit( function(event) {
+         YerOverlay.dom.cont.find('form').submit( function(event) {
              event.preventDefault();
              
              jQuery(this).css('opacity', 0.3 ).find('input[type="submit"]').parent().css('visibility', 'hidden');
@@ -65,14 +70,14 @@ var yerOverlay = {
              jQuery.post( url + '?ajax=y', form.serialize(), function( data ) {
                  
                  var content = jQuery( data ).find( p.selector );
-                 yerOverlay.dom.cont.children().fadeOut( 200, function(){
+                 YerOverlay.dom.cont.children().fadeOut( 200, function(){
 
                     jQuery(this).parent().empty().append( content ).children().css('opacity', 0);
-                    yerOverlay.fitboxsize();
-                    yerOverlay.dom.cont.children().hide().css('opacity', 1).fadeIn( 200 );
+                    YerOverlay.fitboxsize();
+                    YerOverlay.dom.cont.children().hide().css('opacity', 1).fadeIn( 200 );
                     
-                    yerOverlay.formsubmit( p );
-                    yerOverlay.closebtn();
+                    YerOverlay.formsubmit( p );
+                    YerOverlay.closebtn();
                     
                  });
                  
@@ -83,20 +88,24 @@ var yerOverlay = {
     
     fitboxsize: function () {
          
-         var box_padding_top = parseInt( yerOverlay.dom.box.css('padding-top'), 10 ),
-             box_padding_bottom = parseInt( yerOverlay.dom.box.css('padding-bottom'), 10 ),
-             box_margin_top = parseInt( yerOverlay.dom.box.css('margin-top'), 10 ),
-             box_margin_bottom = parseInt( yerOverlay.dom.box.css('margin-bottom'), 10 ),
-             cont_height = yerOverlay.dom.box.height(),
-             windowsize = yerOverlay.windowsize(),
+         var box_padding_top = parseInt( YerOverlay.dom.box.css('padding-top'), 10 ),
+             box_padding_bottom = parseInt( YerOverlay.dom.box.css('padding-bottom'), 10 ),
+             box_margin_top = parseInt( YerOverlay.dom.box.css('margin-top'), 10 ),
+             box_margin_bottom = parseInt( YerOverlay.dom.box.css('margin-bottom'), 10 ),
+             cont_height = YerOverlay.dom.box.height(),
+             windowsize = YerOverlay.windowsize(),
              box_vert_space = cont_height + box_padding_top + box_padding_bottom + box_margin_top + box_margin_bottom;
-        
-        if ( windowsize.height < box_vert_space ) { yerOverlay.dom.cont.height( windowsize.height  - box_margin_top - box_margin_bottom ); }
-    
-        window.onresize = function() {
-            jQuery('.yeroverlay-box').height( cont_height + box_padding_top + box_padding_bottom );
-            yerOverlay.fitboxsize();
-        };
+
+        if ( windowsize.height < box_vert_space ) {
+
+            YerOverlay.dom.cont.height( windowsize.height - box_margin_top - box_margin_bottom );
+        }
+
+        jQuery(window).resize( function() {
+
+            windowsize = YerOverlay.windowsize();
+            YerOverlay.dom.cont.height( windowsize.height - box_margin_top - box_margin_bottom );
+        });
     },
     
     
@@ -126,11 +135,11 @@ var yerOverlay = {
      
     closebtn: function () {
 
-        yerOverlay.dom.box.append('<div class="yeroverlay-close">');
-        yerOverlay.dom.close = yerOverlay.dom.box.find('.yeroverlay-close');
+        YerOverlay.dom.box.append('<div class="yeroverlay-close">');
+        YerOverlay.dom.close = YerOverlay.dom.box.find('.yeroverlay-close');
 
-        yerOverlay.dom.close.on( 'click', function (event) {
-            yerOverlay.dom.wrap.fadeOut( 100 );
+        YerOverlay.dom.close.on( 'click', function (event) {
+            YerOverlay.dom.wrap.fadeOut( 100 );
             event.stopPropagation();
         });
     }
