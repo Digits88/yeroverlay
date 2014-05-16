@@ -1,147 +1,158 @@
-var YerOverlay = {
-    
-    dom: {},
-    
-    init: function () {
-        jQuery('body').append('<div class="yeroverlay-wrap"><div class="yeroverlay-box"><div class="yeroverlay-content">');
-        
-        YerOverlay.dom.wrap = jQuery('.yeroverlay-wrap');
-        YerOverlay.dom.box = jQuery('.yeroverlay-box');
-        YerOverlay.dom.cont = jQuery('.yeroverlay-content');
-        
-        YerOverlay.dom.wrap.on('click', function(event) { YerOverlay.dom.wrap.fadeOut( 100 ); event.stopPropagation(); });
-        YerOverlay.dom.box.on('click', function(event) { event.stopPropagation(); });
-    },
-    
-    open: function () {
-          
-          YerOverlay.dom.wrap.fadeIn( 200 );
-          YerOverlay.fitboxsize();
-    },
-    
-    
-    zoom: function () {
-        
-        
-    },
-    
-    
-    selector: function () {
-        
-        
-    },
-    
-    
-    form: function ( p ) {
-        
-        if ( typeof p === 'undefined' ) { p = {}; }
-        if ( typeof p.path === 'undefined' ) { p.path = '/'; }
-        if ( typeof p.selector === 'undefined' ) { p.selector = '#overlay'; }
-        
-        YerOverlay.dom.wrap.fadeIn( 200 );
-        
-        YerOverlay.dom.box.hide();
-        YerOverlay.dom.cont.load( p.path + ' ' + p.selector, function() {
-            
-            YerOverlay.fitboxsize();
-            
-            YerOverlay.dom.box.fadeIn( 200 , function(){
-            
-                YerOverlay.formsubmit( p );
-                YerOverlay.closebtn();
-                
-            });
-        });
-        
-    },
-    
-    
-    formsubmit: function ( p ) {
-         
-         
-         YerOverlay.dom.cont.find('form').submit( function(event) {
-             event.preventDefault();
-             
-             jQuery(this).css('opacity', 0.3 ).find('input[type="submit"]').parent().css('visibility', 'hidden');
-             
-             var form = jQuery(this),
-                 url = form.attr('action');
+function YerOverlay () {
 
-             jQuery.post( url + '?ajax=y', form.serialize(), function( data ) {
-                 
-                 var content = jQuery( data ).find( p.selector );
-                 YerOverlay.dom.cont.children().fadeOut( 200, function(){
+	var t = this;
 
-                    jQuery(this).parent().empty().append( content ).children().css('opacity', 0);
-                    YerOverlay.fitboxsize();
-                    YerOverlay.dom.cont.children().hide().css('opacity', 1).fadeIn( 200 );
-                    
-                    YerOverlay.formsubmit( p );
-                    YerOverlay.closebtn();
-                    
-                 });
-                 
-             });
-         });
-    },
-    
-    
-    fitboxsize: function () {
-         
-         var box_padding_top = parseInt( YerOverlay.dom.box.css('padding-top'), 10 ),
-             box_padding_bottom = parseInt( YerOverlay.dom.box.css('padding-bottom'), 10 ),
-             box_margin_top = parseInt( YerOverlay.dom.box.css('margin-top'), 10 ),
-             box_margin_bottom = parseInt( YerOverlay.dom.box.css('margin-bottom'), 10 ),
-             cont_height = YerOverlay.dom.box.height(),
-             windowsize = YerOverlay.windowsize(),
-             box_vert_space = cont_height + box_padding_top + box_padding_bottom + box_margin_top + box_margin_bottom;
+	t.dom = {};
 
-        if ( windowsize.height < box_vert_space ) {
+	t.init = function () {
 
-            YerOverlay.dom.cont.height( windowsize.height - box_margin_top - box_margin_bottom );
-        }
+		jQuery( 'body' ).append( '<div class="yeroverlay-wrap"><div class="yeroverlay-box"><div class="yeroverlay-content">' );
 
-        jQuery(window).resize( function() {
+		t.dom.wrap = jQuery( '.yeroverlay-wrap' );
+		t.dom.box = jQuery( '.yeroverlay-box' );
+		t.dom.cont = jQuery( '.yeroverlay-content' );
 
-            windowsize = YerOverlay.windowsize();
-            YerOverlay.dom.cont.height( windowsize.height - box_margin_top - box_margin_bottom );
-        });
-    },
-    
-    
-    windowsize: function () {
-  
-         var data = {};
+		t.dom.wrap.on( 'click', function( event ) { t.dom.wrap.fadeOut( 100 ); event.stopPropagation(); });
+		t.dom.box.on( 'click', function( event ) { event.stopPropagation(); });
+	};
 
-          /* all browsers exept IE */
-          if(window.innerWidth) {
-              data.width = window.innerWidth;
-              data.height = window.innerHeight;
-          }
-          /* for IE with doctype */
-          else if(document.documentElement && document.documentElement.clientWidth) {
-              data.width = document.documentElement.clientWidth;
-              data.height = document.documentElement.clientHeight;
-          }
-          /* for IE without doctype */
-          else if(document.body.clientWidth) {
-              data.width = document.body.clientWidth;
-              data.height = document.body.clientHeight;
-          }
+	t.listen = function ( ) {
 
-          return data;
-     },
-     
-     
-    closebtn: function () {
+		jQuery( '.yeroverlay' ).on( 'click', function () {
 
-        YerOverlay.dom.box.append('<div class="yeroverlay-close">');
-        YerOverlay.dom.close = YerOverlay.dom.box.find('.yeroverlay-close');
+			var source = jQuery( this ).data( 'yeroverlay-source' ),
+				content = '';
 
-        YerOverlay.dom.close.on( 'click', function (event) {
-            YerOverlay.dom.wrap.fadeOut( 100 );
-            event.stopPropagation();
-        });
-    }
-    
+			if ( source ) {
+
+				content = jQuery( source ).html();
+			}
+
+			t.open( content );
+		} );
+
+	};
+
+	t.open = function ( content ) {
+
+		t.dom.cont.html( content );
+		t.dom.wrap.fadeIn( 200 );
+		t.fitboxsize();
+	};
+
+	t.zoom = function () {
+
+	};
+
+	t.selector = function () {
+
+	};
+
+	t.form = function ( p ) {
+
+		if ( typeof p === 'undefined' ) { p = {}; }
+		if ( typeof p.path === 'undefined' ) { p.path = '/'; }
+		if ( typeof p.selector === 'undefined' ) { p.selector = '#overlay'; }
+
+		t.dom.wrap.fadeIn( 200 );
+
+		t.dom.box.hide();
+		t.dom.cont.load( p.path + ' ' + p.selector, function() {
+
+			t.fitboxsize();
+
+			t.dom.box.fadeIn( 200 , function(){
+
+				t.formsubmit( p );
+				t.closebtn();
+
+			});
+		});
+
+	};
+
+	t.formsubmit = function ( p ) {
+
+		t.dom.cont.find( 'form' ).submit( function( event ) {
+
+			event.preventDefault();
+
+			jQuery(this).css( 'opacity', 0.3 ).find( 'input[type="submit"]' ).parent().css( 'visibility', 'hidden' );
+
+			var form = jQuery(this),
+				url = form.attr( 'action' );
+
+			jQuery.post( url + '?ajax=y', form.serialize(), function( data ) {
+
+				var content = jQuery( data ).find( p.selector );
+
+				t.dom.cont.children().fadeOut( 200, function(){
+
+					jQuery(this).parent().empty().append( content ).children().css( 'opacity', 0 );
+
+					t.fitboxsize();
+
+					t.dom.cont.children().hide().css( 'opacity', 1 ).fadeIn( 200 );
+
+					t.formsubmit( p );
+
+					t.closebtn();
+
+				});
+
+			});
+		});
+	};
+
+	t.fitboxsize = function () {
+
+		t.fitboxsize_job();
+
+		jQuery( window ).resize( function() {
+
+			t.fitboxsize_job();
+		});
+	};
+
+	t.fitboxsize_job = function () {
+
+		t.dom.cont.height( '' );
+
+		var windowsize = t.windowsize(),
+			box_padding_top = parseInt( t.dom.box.css( 'padding-top' ), 10 ),
+			box_padding_bottom = parseInt( t.dom.box.css( 'padding-bottom' ), 10 ),
+			box_margin_top = parseInt( t.dom.box.css( 'margin-top' ), 10 ),
+			box_margin_bottom = parseInt( t.dom.box.css( 'margin-bottom' ), 10 ),
+			cont_height = t.dom.box.height(),
+			cont_height_max = windowsize.height - box_margin_top - box_margin_bottom - box_padding_top - box_padding_bottom,
+			box_vert_space = cont_height + box_padding_top + box_padding_bottom + box_margin_top + box_margin_bottom;
+
+		if ( windowsize.height < box_vert_space ) {
+
+			t.dom.cont.height( cont_height_max );
+		}
+	};
+
+	t.windowsize = function () {
+
+		var data = {};
+
+		data.width = jQuery( window ).width();
+		data.height = jQuery( window ).height();
+
+		return data;
+	};
+
+	t.closebtn = function () {
+
+		t.dom.box.append( '<div class="yeroverlay-close">' );
+		t.dom.close = t.dom.box.find( '.yeroverlay-close' );
+
+		t.dom.close.on( 'click', function (event) {
+
+			t.dom.wrap.fadeOut( 100 );
+			event.stopPropagation();
+		});
+	};
+
 };

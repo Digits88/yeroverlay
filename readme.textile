@@ -1,4 +1,4 @@
-h1. yeroverlay
+h1. YerOverlay
 
 enables overlays for differnt situations.
 
@@ -11,8 +11,8 @@ enables overlays for differnt situations.
 h2. Roadmap
 
 * jQuery loads
-* youtube & vimeo videos
-* html-content
+* YouTube & Vimeo videos
+* HTML-content
 * images
 
 * [done] forms
@@ -26,7 +26,7 @@ h3. Forms
     jQuery('.formbutton').on('click', function (event) {
         event.preventDefault();
 
-        var my_overlay= yerOverlay;
+        var my_overlay= new YerOverlay();
         my_overlay.form({
             path: '/kontakt/',
             selector: '.form-wrap'

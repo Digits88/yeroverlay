@@ -1,0 +1,47 @@
+/* WRAP begin */
+
+	.yeroverlay-wrap {
+		z-index: 999;
+		background: rgba(0,0,0,0.5);
+		//background: rgba(0,0,0,0.5) url(../assets/yeroverlay/themes/default/media/loader.gif) no-repeat center center;
+	}
+
+/* WRAP end */
+
+/* BOX begin */
+
+	.yeroverlay-box {
+		background-color: white;
+		padding: 30px 40px;
+		margin: 0;
+		max-width: 960px - 40px - 40px;
+		
+        box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 0px 10px 30px 10px rgba(0, 0, 0, 0.1);
+	}
+	
+	@media screen and ( min-width: 600px ) {
+	    
+	    .yeroverlay-box {
+    		margin: 10px;
+    	}
+	}
+	
+	.gt-mini .yeroverlay-box {
+		margin: 20px;
+	}
+	.gt-small .yeroverlay-box {
+		margin: 30px;
+	}
+	
+
+/* BOX end */
+
+/* CLOSE begin */
+
+	.overlay-close {
+		
+	}
+
+/* CLOSE end */
